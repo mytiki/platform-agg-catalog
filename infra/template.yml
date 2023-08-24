@@ -14,7 +14,7 @@ Resources:
       MemorySize: 512
       Timeout: 20
       FunctionUrlConfig:
-        AuthType: AWS_IAM
+        AuthType: NONE
         InvokeMode: BUFFERED
         Cors:
           AllowCredentials: true
