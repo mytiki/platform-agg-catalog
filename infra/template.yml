@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Ocean - Catalog Infrastructure
+
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ..
+      Handler: com.mytiki.ocean.catalog.App::handleRequest
+      Runtime: java17
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 20
+      FunctionUrlConfig:
+        AuthType: AWS_IAM
+        InvokeMode: BUFFERED
+        Cors:
+          AllowCredentials: true
+          AllowHeaders:
+            - Authorization
+            - Content-Type
+            - Accept
+          AllowMethods:
+            - GET
+            - POST
+            - DELETE
+          AllowOrigins:
+            - "*"
+
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: mytiki-ocean
+
+  Glue:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: ocean
+        Description: Metadata catalog for Ocean
+        LocationUri: s3://mytiki-ocean
+
+Outputs:
+  FunctionUrl:
+    Description: "URL"
+    Value: !GetAtt FunctionUrl.FunctionUrl
+
+  Bucket:
+    Description: "ARN"
+    Value: !GetAtt Bucket.Arn
+
+  Glue:
+    Description: "Name"
+    Value: !Ref Glue
+
