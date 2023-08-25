@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.get;
+package com.mytiki.ocean.catalog.read;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -20,10 +20,10 @@ import software.amazon.awssdk.http.HttpStatusCode;
 
 import java.util.stream.Collectors;
 
-public class GetHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+public class ReadHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
     private final Iceberg iceberg;
 
-    public GetHandler(Iceberg iceberg) {
+    public ReadHandler(Iceberg iceberg) {
         super();
         this.iceberg = iceberg;
     }
@@ -43,7 +43,7 @@ public class GetHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGate
                         .build();
             }
             Table table = iceberg.loadTable(identifier);
-            GetRsp body = new GetRsp();
+            ReadRsp body = new ReadRsp();
             body.setName(name);
             body.setLocation(table.location());
             body.setSchema(table.schema().toString());

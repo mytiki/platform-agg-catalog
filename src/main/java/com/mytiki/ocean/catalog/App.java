@@ -10,7 +10,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import com.mytiki.ocean.catalog.delete.DeleteHandler;
-import com.mytiki.ocean.catalog.get.GetHandler;
+import com.mytiki.ocean.catalog.read.ReadHandler;
 import com.mytiki.ocean.catalog.update.UpdateHandler;
 import com.mytiki.ocean.catalog.utils.*;
 import com.mytiki.ocean.catalog.create.CreateHandler;
@@ -28,7 +28,7 @@ public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HT
                     .add("POST", "/api/latest/?", new CreateHandler(iceberg))
                     .add("DELETE", "/api/latest/.*", new DeleteHandler(iceberg))
                     .add("POST", "/api/latest/.*", new UpdateHandler(iceberg))
-                    .add("GET", "/api/latest/.*", new GetHandler(iceberg))
+                    .add("GET", "/api/latest/.*", new ReadHandler(iceberg))
                     .handle(http.getMethod(), http.getPath(), request, context);
             iceberg.close();
             return response;

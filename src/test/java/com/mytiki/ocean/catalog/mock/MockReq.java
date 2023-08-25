@@ -7,10 +7,8 @@ package com.mytiki.ocean.catalog.mock;
 
 import com.mytiki.ocean.catalog.create.CreateReq;
 import com.mytiki.ocean.catalog.update.UpdateReq;
-import com.mytiki.ocean.catalog.utils.Iceberg;
-import org.apache.iceberg.catalog.TableIdentifier;
 
-public class TableReq {
+public class MockReq {
 
     public static CreateReq createReq() {
         CreateReq req = new CreateReq();

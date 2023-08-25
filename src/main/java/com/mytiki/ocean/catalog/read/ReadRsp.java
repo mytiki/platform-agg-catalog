@@ -3,11 +3,11 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.get;
+package com.mytiki.ocean.catalog.read;
 
 import java.util.Map;
 
-public class GetRsp {
+public class ReadRsp {
     private String name;
     private String location;
     private String schema;

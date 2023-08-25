@@ -21,8 +21,7 @@ public class ApiErrorTest {
     public void ApiExceptionBuilder_WithCause_ApiError() {
         //TODO
     }
-
-
+    
     @Test
     @Ignore
     public void ApiError_To_Json() {

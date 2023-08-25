@@ -26,4 +26,10 @@ public class RouterTest {
     public void Handle_Multiple_Match() {
         //TODO
     }
+
+    @Test
+    @Ignore
+    public void Extract_Common_Patterns() {
+        //TODO
+    }
 }
