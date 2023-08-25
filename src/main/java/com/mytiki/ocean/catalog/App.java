@@ -10,6 +10,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import com.mytiki.ocean.catalog.drop.DropHandler;
+import com.mytiki.ocean.catalog.get.GetHandler;
+import com.mytiki.ocean.catalog.update.UpdateHandler;
 import com.mytiki.ocean.catalog.utils.ApiError;
 import com.mytiki.ocean.catalog.utils.ApiException;
 import com.mytiki.ocean.catalog.create.CreateHandler;
@@ -26,8 +28,10 @@ public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HT
         APIGatewayV2HTTPEvent.RequestContext.Http http = request.getRequestContext().getHttp();
         try {
             return new Router<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse>()
-                    .add("POST", "/api/latest", new CreateHandler())
+                    .add("POST", "/api/latest/?", new CreateHandler())
                     .add("DELETE", "/api/latest/.*", new DropHandler())
+                    .add("POST", "/api/latest/.*", new UpdateHandler())
+                    .add("GET", "/api/latest/.*", new GetHandler())
                     .handle(http.getMethod(), http.getPath(), request, context);
         }catch (ApiException e){
             logger.debug(e.getMessage());

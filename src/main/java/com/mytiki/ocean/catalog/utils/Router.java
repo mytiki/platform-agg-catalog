@@ -9,16 +9,13 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import software.amazon.awssdk.http.HttpStatusCode;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Router<I,O> {
-    private final Map<String, RequestHandler<I,O>> routes = new HashMap<>();
+    private final Map<String, RequestHandler<I,O>> routes = new LinkedHashMap<>();
 
     public Router<I,O> add(String route, RequestHandler<I,O> handler){
         routes.put(route, handler);

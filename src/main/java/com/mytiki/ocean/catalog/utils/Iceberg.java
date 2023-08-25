@@ -17,13 +17,14 @@ import java.util.Map;
 public class Iceberg extends GlueCatalog {
     protected static final Logger logger = LogManager.getLogger();
     public static final Namespace database = Namespace.of("ocean");
+    public static final String warehouse = "s3://mytiki-ocean";
 
     public Iceberg() {
         super();
         Map<String, String> props = new HashMap<>() {{
             put("catalog-name", "iceberg");
             put("catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog");
-            put("warehouse", "s3://tiki-ocean-test");
+            put("warehouse", warehouse);
             put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
             put("glue.skip-archive", "true");
         }};

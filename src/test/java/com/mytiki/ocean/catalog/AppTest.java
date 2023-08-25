@@ -8,6 +8,7 @@ package com.mytiki.ocean.catalog;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import com.mytiki.ocean.catalog.create.CreateReq;
+import com.mytiki.ocean.catalog.update.UpdateReq;
 import com.mytiki.ocean.catalog.utils.Mapper;
 import org.junit.Test;
 
@@ -49,17 +50,17 @@ public class AppTest {
     public void success() {
         App app = new App();
 
-//        CreateReq body = new CreateReq();
-//        body.setSchema(raw);
-//        body.setName("logs");
-//        body.setIdentity("level");
-//        body.setPartition("event_time");
+        UpdateReq body = new UpdateReq();
+        body.setSchema(raw);
+        //body.setName("logs");
+        body.setIdentity("level");
+        body.setPartition("event_time");
 
         APIGatewayV2HTTPEvent request = APIGatewayV2HTTPEvent.builder()
                 //.withBody(new Mapper().writeValueAsString(body))
                 .withRequestContext(APIGatewayV2HTTPEvent.RequestContext.builder()
                         .withHttp(APIGatewayV2HTTPEvent.RequestContext.Http.builder()
-                                .withMethod("DELETE")
+                                .withMethod("GET")
                                 .withPath("/api/latest/logs")
                                 .build())
                         .build())

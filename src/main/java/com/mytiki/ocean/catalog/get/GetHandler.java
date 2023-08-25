@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.drop;
+package com.mytiki.ocean.catalog.get;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -13,11 +13,17 @@ import com.mytiki.ocean.catalog.utils.ApiExceptionBuilder;
 import com.mytiki.ocean.catalog.utils.Iceberg;
 import com.mytiki.ocean.catalog.utils.Mapper;
 import com.mytiki.ocean.catalog.utils.Router;
-import org.apache.avro.SchemaParseException;
+import org.apache.avro.util.MapEntry;
+import org.apache.iceberg.PartitionField;
+import org.apache.iceberg.Table;
+import org.apache.iceberg.avro.AvroSchemaUtil;
 import org.apache.iceberg.catalog.TableIdentifier;
 import software.amazon.awssdk.http.HttpStatusCode;
 
-public class DropHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class GetHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
 
     @Override
     public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent request, Context context) {
@@ -29,20 +35,19 @@ public class DropHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGat
             Iceberg iceberg = new Iceberg();
             if (!iceberg.tableExists(identifier)) {
                 throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
-                        .message("Bad Request")
+                        .message("Not Found")
                         .detail("Table does not exist")
                         .properties("name", name)
                         .build();
             }
-            if (!iceberg.dropTable(identifier)) {
-                throw new ApiExceptionBuilder(HttpStatusCode.INTERNAL_SERVER_ERROR)
-                        .message("Drop Failed")
-                        .properties("name", name)
-                        .build();
-            }
-            iceberg.close();
-            DropRsp body = new DropRsp();
+            Table table = iceberg.loadTable(identifier);
+            GetRsp body = new GetRsp();
             body.setName(name);
+            body.setLocation(table.location());
+            body.setSchema(table.schema().toString());
+            body.setPartition(table.spec().fields().stream().collect(
+                    Collectors.toMap((field) -> field.transform().toString(), PartitionField::name)));
+            iceberg.close();
             return APIGatewayV2HTTPResponse.builder()
                     .withStatusCode(HttpStatusCode.OK)
                     .withBody(new Mapper().writeValueAsString(body))
