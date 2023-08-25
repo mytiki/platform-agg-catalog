@@ -15,9 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateTest {
 
-    @Spy
-    Iceberg iceberg = new Iceberg();
-
     @Test
     @Ignore
     public void HandleRequest_Exists_200() {
