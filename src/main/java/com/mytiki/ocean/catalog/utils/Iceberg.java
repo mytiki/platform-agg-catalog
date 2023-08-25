@@ -7,10 +7,8 @@ package com.mytiki.ocean.catalog.utils;
 
 import org.apache.iceberg.aws.glue.GlueCatalog;
 import org.apache.iceberg.catalog.Namespace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -18,7 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class Iceberg extends GlueCatalog {
-    protected static final Logger logger = LogManager.getLogger();
+    protected static final Logger logger = Logger.getLogger(Iceberg.class);
 
     private final String warehouse;
     private final Namespace database;

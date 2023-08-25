@@ -22,7 +22,7 @@ Resources:
       MemorySize: 512
       Timeout: 20
       FunctionUrlConfig:
-        AuthType: NONE
+        AuthType: AWS_IAM
         InvokeMode: BUFFERED
         Cors:
           AllowCredentials: true
@@ -38,25 +38,23 @@ Resources:
           AllowOrigins:
             - "*"
       Policies:
-        - S3WritePolicy:
+        - S3CrudPolicy:
             BucketName: !Ref BucketName
         - Version: "2012-10-17"
           Statement:
             - Effect: Allow
               Action:
                 - glue:GetTable
+                - glue:GetTables
                 - glue:GetDatabase
+                - glue:GetDatabases
                 - glue:CreateTable
+                - glue:DeleteTable
+                - glue:UpdateTable
               Resource:
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/${DatabaseName}"
-        - Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action:
-                - glue:GetTable
-                - glue:CreateTable
-              Resource: !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/${DatabaseName}/*"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/${DatabaseName}/*"
 
   Bucket:
     Type: AWS::S3::Bucket

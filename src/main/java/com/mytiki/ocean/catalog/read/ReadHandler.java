@@ -16,11 +16,13 @@ import com.mytiki.ocean.catalog.utils.Router;
 import org.apache.iceberg.PartitionField;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.catalog.TableIdentifier;
+import org.apache.log4j.Logger;
 import software.amazon.awssdk.http.HttpStatusCode;
 
 import java.util.stream.Collectors;
 
 public class ReadHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+    protected static final Logger logger = Logger.getLogger(ReadHandler.class);
     private final Iceberg iceberg;
 
     public ReadHandler(Iceberg iceberg) {

@@ -14,13 +14,14 @@ import com.mytiki.ocean.catalog.read.ReadHandler;
 import com.mytiki.ocean.catalog.update.UpdateHandler;
 import com.mytiki.ocean.catalog.utils.*;
 import com.mytiki.ocean.catalog.create.CreateHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    protected static final Logger logger = LogManager.getLogger();
+    protected static final Logger logger = Logger.getLogger(App.class);
 
     public APIGatewayV2HTTPResponse handleRequest(final APIGatewayV2HTTPEvent request, final Context context) {
+        PropertyConfigurator.configure(App.class.getClassLoader().getResource("log4j.properties"));
         APIGatewayV2HTTPEvent.RequestContext.Http http = request.getRequestContext().getHttp();
         try {
             Iceberg iceberg = new Iceberg();

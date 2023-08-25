@@ -18,11 +18,13 @@ import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.avro.AvroSchemaUtil;
 import org.apache.iceberg.catalog.TableIdentifier;
+import org.apache.log4j.Logger;
 import software.amazon.awssdk.http.HttpStatusCode;
 
 import java.time.Instant;
 
 public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+    protected static final Logger logger = Logger.getLogger(CreateHandler.class);
     private final Mapper mapper = new Mapper();
     private final Iceberg iceberg;
 
