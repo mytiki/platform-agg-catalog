@@ -10,25 +10,37 @@ import org.apache.iceberg.catalog.Namespace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class Iceberg extends GlueCatalog {
     protected static final Logger logger = LogManager.getLogger();
-    public static final Namespace database = Namespace.of("ocean");
-    public static final String warehouse = "s3://mytiki-ocean";
+
+    private final String warehouse;
+    private final Namespace database;
 
     public Iceberg() {
         super();
-        Map<String, String> props = new HashMap<>() {{
-            put("catalog-name", "iceberg");
-            put("catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog");
-            put("warehouse", warehouse);
-            put("io-impl", "org.apache.iceberg.aws.s3.S3FileIO");
-            put("glue.skip-archive", "true");
-        }};
-        super.initialize("glue_catalog", props);
+        try (InputStream input = Iceberg.class.getClassLoader().getResourceAsStream("iceberg.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+            Map<String, String> props = new HashMap<>() {{
+                put("catalog-name", prop.getProperty("catalog-name"));
+                put("catalog-impl", prop.getProperty("catalog-impl"));
+                put("warehouse", prop.getProperty("warehouse"));
+                put("io-impl", prop.getProperty("io-impl"));
+                put("glue.skip-archive", prop.getProperty("glue.skip-archive"));
+            }};
+            warehouse = prop.getProperty("warehouse");
+            database = Namespace.of(prop.getProperty("database-name"));
+            super.initialize("glue_catalog", props);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
@@ -38,5 +50,13 @@ public class Iceberg extends GlueCatalog {
         } catch (IOException e) {
             logger.error(e);
         }
+    }
+
+    public String getWarehouse() {
+        return warehouse;
+    }
+
+    public Namespace getDatabase() {
+        return database;
     }
 }

@@ -13,17 +13,20 @@ import com.mytiki.ocean.catalog.utils.ApiExceptionBuilder;
 import com.mytiki.ocean.catalog.utils.Iceberg;
 import com.mytiki.ocean.catalog.utils.Mapper;
 import com.mytiki.ocean.catalog.utils.Router;
-import org.apache.avro.util.MapEntry;
 import org.apache.iceberg.PartitionField;
 import org.apache.iceberg.Table;
-import org.apache.iceberg.avro.AvroSchemaUtil;
 import org.apache.iceberg.catalog.TableIdentifier;
 import software.amazon.awssdk.http.HttpStatusCode;
 
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GetHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+    private final Iceberg iceberg;
+
+    public GetHandler(Iceberg iceberg) {
+        super();
+        this.iceberg = iceberg;
+    }
 
     @Override
     public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent request, Context context) {
@@ -31,8 +34,7 @@ public class GetHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGate
                 request.getRequestContext().getHttp().getPath(),
                 "(?<=/api/latest/)(\\S*[^/])");
         try {
-            TableIdentifier identifier = TableIdentifier.of(Iceberg.database, name);
-            Iceberg iceberg = new Iceberg();
+            TableIdentifier identifier = TableIdentifier.of(iceberg.getDatabase(), name);
             if (!iceberg.tableExists(identifier)) {
                 throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
                         .message("Not Found")
@@ -47,7 +49,6 @@ public class GetHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGate
             body.setSchema(table.schema().toString());
             body.setPartition(table.spec().fields().stream().collect(
                     Collectors.toMap((field) -> field.transform().toString(), PartitionField::name)));
-            iceberg.close();
             return APIGatewayV2HTTPResponse.builder()
                     .withStatusCode(HttpStatusCode.OK)
                     .withBody(new Mapper().writeValueAsString(body))

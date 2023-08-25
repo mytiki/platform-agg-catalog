@@ -9,17 +9,13 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import com.mytiki.ocean.catalog.drop.DropHandler;
+import com.mytiki.ocean.catalog.delete.DeleteHandler;
 import com.mytiki.ocean.catalog.get.GetHandler;
 import com.mytiki.ocean.catalog.update.UpdateHandler;
-import com.mytiki.ocean.catalog.utils.ApiError;
-import com.mytiki.ocean.catalog.utils.ApiException;
+import com.mytiki.ocean.catalog.utils.*;
 import com.mytiki.ocean.catalog.create.CreateHandler;
-import com.mytiki.ocean.catalog.utils.Mapper;
-import com.mytiki.ocean.catalog.utils.Router;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
     protected static final Logger logger = LogManager.getLogger();
@@ -27,12 +23,15 @@ public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HT
     public APIGatewayV2HTTPResponse handleRequest(final APIGatewayV2HTTPEvent request, final Context context) {
         APIGatewayV2HTTPEvent.RequestContext.Http http = request.getRequestContext().getHttp();
         try {
-            return new Router<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse>()
-                    .add("POST", "/api/latest/?", new CreateHandler())
-                    .add("DELETE", "/api/latest/.*", new DropHandler())
-                    .add("POST", "/api/latest/.*", new UpdateHandler())
-                    .add("GET", "/api/latest/.*", new GetHandler())
+            Iceberg iceberg = new Iceberg();
+            APIGatewayV2HTTPResponse response = new Router<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse>()
+                    .add("POST", "/api/latest/?", new CreateHandler(iceberg))
+                    .add("DELETE", "/api/latest/.*", new DeleteHandler(iceberg))
+                    .add("POST", "/api/latest/.*", new UpdateHandler(iceberg))
+                    .add("GET", "/api/latest/.*", new GetHandler(iceberg))
                     .handle(http.getMethod(), http.getPath(), request, context);
+            iceberg.close();
+            return response;
         }catch (ApiException e){
             logger.debug(e.getMessage());
             return APIGatewayV2HTTPResponse.builder()

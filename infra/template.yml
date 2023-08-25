@@ -2,6 +2,14 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Ocean - Catalog Infrastructure
 
+Parameters:
+  BucketName:
+    Type: String
+    Description: Enter the S3 bucket name for the lake
+  DatabaseName:
+    Type: String
+    Description: Enter the database name for the lake
+
 Resources:
   Function:
     Type: AWS::Serverless::Function
@@ -31,7 +39,7 @@ Resources:
             - "*"
       Policies:
         - S3WritePolicy:
-            BucketName: "mytiki-ocean"
+            BucketName: !Ref BucketName
         - Version: "2012-10-17"
           Statement:
             - Effect: Allow
@@ -41,28 +49,28 @@ Resources:
                 - glue:CreateTable
               Resource:
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
-                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/ocean"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/${DatabaseName}"
         - Version: "2012-10-17"
           Statement:
             - Effect: Allow
               Action:
                 - glue:GetTable
                 - glue:CreateTable
-              Resource: !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/ocean/*"
+              Resource: !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/${DatabaseName}/*"
 
   Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: mytiki-ocean
+      BucketName: !Ref BucketName
 
   Glue:
     Type: AWS::Glue::Database
     Properties:
       CatalogId: !Ref AWS::AccountId
       DatabaseInput:
-        Name: ocean
+        Name: !Ref DatabaseName
         Description: Metadata catalog for Ocean
-        LocationUri: s3://mytiki-ocean
+        LocationUri: !Sub "s3://${BucketName}"
 
 Outputs:
   FunctionUrl:

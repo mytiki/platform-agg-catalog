@@ -3,9 +3,9 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.drop;
+package com.mytiki.ocean.catalog.delete;
 
-public class DropRsp {
+public class DeleteRsp {
     private String name;
 
     public String getName() {
