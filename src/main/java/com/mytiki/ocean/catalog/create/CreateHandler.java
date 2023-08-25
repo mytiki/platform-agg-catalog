@@ -20,6 +20,7 @@ import org.apache.iceberg.avro.AvroSchemaUtil;
 import org.apache.iceberg.catalog.TableIdentifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.amazon.awssdk.http.HttpStatusCode;
 
 public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
     private final Mapper mapper = new Mapper();
@@ -36,7 +37,7 @@ public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIG
                     .identity(req.getIdentity())
                     .build();
             if(iceberg.tableExists(identifier)){
-                throw new ApiExceptionBuilder(400)
+                throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
                         .message("Bad Request")
                         .detail("Table already exists")
                         .properties("name", req.getName())
@@ -48,11 +49,11 @@ public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIG
             body.setName(table.name());
             body.setLocation(table.location());
             return APIGatewayV2HTTPResponse.builder()
-                    .withStatusCode(200)
+                    .withStatusCode(HttpStatusCode.OK)
                     .withBody(mapper.writeValueAsString(body))
                     .build();
         }catch (SchemaParseException | IllegalArgumentException ex) {
-            throw new ApiExceptionBuilder(400)
+            throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
                     .message("Bad Request")
                     .detail(ex.getMessage())
                     .properties("schema", req.getSchema())

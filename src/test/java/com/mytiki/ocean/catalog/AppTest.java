@@ -49,18 +49,18 @@ public class AppTest {
     public void success() {
         App app = new App();
 
-        CreateReq body = new CreateReq();
-        body.setSchema(raw);
-        body.setName("logs");
-        body.setIdentity("level");
-        body.setPartition("event_time");
+//        CreateReq body = new CreateReq();
+//        body.setSchema(raw);
+//        body.setName("logs");
+//        body.setIdentity("level");
+//        body.setPartition("event_time");
 
         APIGatewayV2HTTPEvent request = APIGatewayV2HTTPEvent.builder()
-                .withBody(new Mapper().writeValueAsString(body))
+                //.withBody(new Mapper().writeValueAsString(body))
                 .withRequestContext(APIGatewayV2HTTPEvent.RequestContext.builder()
                         .withHttp(APIGatewayV2HTTPEvent.RequestContext.Http.builder()
-                                .withMethod("POST")
-                                .withPath("/api/latest")
+                                .withMethod("DELETE")
+                                .withPath("/api/latest/logs")
                                 .build())
                         .build())
                 .build();

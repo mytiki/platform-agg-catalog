@@ -7,9 +7,15 @@ package com.mytiki.ocean.catalog.utils;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import software.amazon.awssdk.http.HttpStatusCode;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Router<I,O> {
     private final Map<String, RequestHandler<I,O>> routes = new HashMap<>();
@@ -24,11 +30,25 @@ public class Router<I,O> {
     }
 
     public O handle(String route, final I request, final Context context) {
-        return routes.get(route).handleRequest(request, context);
+        Optional<String> key = routes.keySet()
+                .stream()
+                .filter(route::matches)
+                .findFirst();
+        return routes.get(key.orElseThrow(() ->
+                new ApiExceptionBuilder(HttpStatusCode.NOT_FOUND)
+                        .message("Not Found")
+                        .build()))
+                .handleRequest(request, context);
     }
 
     public O handle(String method, String path, final I request, final Context context) {
         return handle(toRoute(method, path), request, context);
+    }
+
+    public static String extract(String src, String pattern) {
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(src);
+        return m.find() ? m.group(0) : null;
     }
 
     private String toRoute(String method, String path) {

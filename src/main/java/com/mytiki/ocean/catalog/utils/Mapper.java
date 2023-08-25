@@ -7,6 +7,7 @@ package com.mytiki.ocean.catalog.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import software.amazon.awssdk.http.HttpStatusCode;
 
 public class Mapper extends ObjectMapper {
 
@@ -15,7 +16,7 @@ public class Mapper extends ObjectMapper {
         try {
             return super.readValue(src, valueType);
         } catch (JsonProcessingException e) {
-            throw new ApiExceptionBuilder(400)
+            throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
                     .message("Bad Request")
                     .detail(e.getMessage())
                     .properties("raw", src)
@@ -28,7 +29,7 @@ public class Mapper extends ObjectMapper {
         try {
             return super.writeValueAsString(value);
         } catch (JsonProcessingException e) {
-            throw new ApiExceptionBuilder(500)
+            throw new ApiExceptionBuilder(HttpStatusCode.INTERNAL_SERVER_ERROR)
                     .message("Internal Server Error")
                     .detail(e.getMessage())
                     .build();
