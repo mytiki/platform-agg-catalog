@@ -18,6 +18,7 @@ Resources:
         InvokeMode: BUFFERED
         Cors:
           AllowCredentials: true
+          MaxAge: 0
           AllowHeaders:
             - Authorization
             - Content-Type
@@ -28,6 +29,26 @@ Resources:
             - DELETE
           AllowOrigins:
             - "*"
+      Policies:
+        - S3WritePolicy:
+            BucketName: "mytiki-ocean"
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - glue:GetTable
+                - glue:GetDatabase
+                - glue:CreateTable
+              Resource:
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/ocean"
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - glue:GetTable
+                - glue:CreateTable
+              Resource: !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/ocean/*"
 
   Bucket:
     Type: AWS::S3::Bucket
