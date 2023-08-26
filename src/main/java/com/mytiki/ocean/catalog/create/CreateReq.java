@@ -5,6 +5,9 @@
 
 package com.mytiki.ocean.catalog.create;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateReq {
     private String name;
     private String schema;

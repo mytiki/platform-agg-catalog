@@ -9,22 +9,21 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import com.mytiki.ocean.catalog.create.CreateHandler;
 import com.mytiki.ocean.catalog.delete.DeleteHandler;
 import com.mytiki.ocean.catalog.read.ReadHandler;
 import com.mytiki.ocean.catalog.update.UpdateHandler;
-import com.mytiki.ocean.catalog.utils.*;
-import com.mytiki.ocean.catalog.create.CreateHandler;
+import com.mytiki.ocean.common.*;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
     protected static final Logger logger = Logger.getLogger(App.class);
 
     public APIGatewayV2HTTPResponse handleRequest(final APIGatewayV2HTTPEvent request, final Context context) {
-        PropertyConfigurator.configure(App.class.getClassLoader().getResource("log4j.properties"));
+        Initialize.logger();
         APIGatewayV2HTTPEvent.RequestContext.Http http = request.getRequestContext().getHttp();
         try {
-            Iceberg iceberg = new Iceberg();
+            Iceberg iceberg = Iceberg.load();
             APIGatewayV2HTTPResponse response = new Router<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse>()
                     .add("POST", "/api/latest/?", new CreateHandler(iceberg))
                     .add("DELETE", "/api/latest/.*", new DeleteHandler(iceberg))

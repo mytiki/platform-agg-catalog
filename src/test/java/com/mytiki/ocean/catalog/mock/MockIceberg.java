@@ -5,7 +5,8 @@
 
 package com.mytiki.ocean.catalog.mock;
 
-import com.mytiki.ocean.catalog.utils.Iceberg;
+
+import com.mytiki.ocean.common.Iceberg;
 import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Schema;
 import org.apache.iceberg.Table;
