@@ -5,11 +5,9 @@
 
 package com.mytiki.ocean.catalog;
 
-import com.mytiki.ocean.catalog.utils.Iceberg;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -5,6 +5,9 @@
 
 package com.mytiki.ocean.catalog.update;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateReq {
     private String schema;
     private String identity;
