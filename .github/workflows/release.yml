@@ -47,7 +47,7 @@ jobs:
         run: |
           cd infra
           sam build
-          sam deploy --parameter-overrides BucketName=mytiki-ocean DatabaseName=ocean
+          sam deploy --parameter-overrides BucketName=mytiki-ocean DatabaseName=ocean --s3-bucket mytiki-sam-deploy
 
       - name: Get Version
         id: version
