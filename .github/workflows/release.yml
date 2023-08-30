@@ -35,6 +35,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::254962200554:role/GitHubDeploy
           role-session-name: ocean_catalog_deploy
+          aws-region: us-east-2
 
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
