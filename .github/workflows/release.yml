@@ -7,9 +7,6 @@ on:
     types:
       - closed
 
-env:
-  AWS_REGION : "us-east-2"
-
 # Cancel any active builds when new commits are pushed
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -38,7 +35,6 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::254962200554:role/GitHubDeploy
           role-session-name: ocean_catalog_deploy
-          aws-region: ${{ env.AWS_REGION }}
 
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
@@ -47,7 +43,7 @@ jobs:
         run: |
           cd infra
           sam build
-          sam deploy --parameter-overrides BucketName=mytiki-ocean DatabaseName=ocean --s3-bucket mytiki-sam-deploy
+          sam deploy
 
       - name: Get Version
         id: version
