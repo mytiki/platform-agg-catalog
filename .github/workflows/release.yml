@@ -7,6 +7,9 @@ on:
     types:
       - closed
 
+env:
+  AWS_REGION : "us-east-2"
+
 # Cancel any active builds when new commits are pushed
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -17,6 +20,8 @@ jobs:
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
     environment: Production
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -27,6 +32,13 @@ jobs:
         with:
           java-version: '20'
           distribution: 'zulu'
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::254962200554:role/GitHubDeploy
+          role-session-name: ocean_catalog_deploy
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
