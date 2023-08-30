@@ -33,8 +33,8 @@ jobs:
           java-version: '20'
           distribution: 'zulu'
 
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::254962200554:role/GitHubDeploy
           role-session-name: ocean_catalog_deploy
