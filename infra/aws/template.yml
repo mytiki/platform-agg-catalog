@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Ocean - Catalog Infrastructure
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Enter the S3 bucket name for the lake
+  DatabaseName:
+    Type: String
+    Description: Enter the database name for the lake
+
+Resources:
+  Function:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: function.yml
+      Parameters:
+        BucketName: !Ref BucketName
+        DatabaseName: !Ref DatabaseName
+
+  Bucket:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: bucket.yml
+      Parameters:
+        BucketName: !Ref BucketName
+
+  Glue:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: catalog.yml
+      Parameters:
+        BucketName: !Ref BucketName

@@ -7,7 +7,10 @@ on:
     types:
       - closed
 
-# Cancel any active builds when new commits are pushed
+env:
+  SESSION_NAME : "gh_action"
+  AWS_REGION : "us-east-2"
+
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
@@ -31,6 +34,9 @@ jobs:
           java-version: '20'
           distribution: 'zulu'
 
+      - name: Install xmlstarlet
+        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -38,14 +44,25 @@ jobs:
           role-session-name: gh_action
           aws-region: us-east-2
 
-      - name: Install xmlstarlet
-        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::254962200554:role/GitHubDeployBase
+          role-session-name: ${{ env.SESSION_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: SAM Deploy
-        run: |
-          cd infra
-          sam build
-          sam deploy --no-confirm-changeset
+      - name: SAM Deploy GitHub
+        run: cd infra/github && sam build && sam package && sam deploy
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::254962200554:role/GitHubDeployOceanCatalog
+          role-session-name: ${{ env.SESSION_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: SAM Deploy AWS
+        run: cd infra/aws && sam build && sam package && sam deploy
 
       - name: Get Version
         id: version

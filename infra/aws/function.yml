@@ -1,20 +1,20 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Ocean - Catalog Infrastructure
+Description: Ocean-Catalog Lambda Function
 
 Parameters:
   BucketName:
     Type: String
-    Description: Enter the S3 bucket name for the lake
+    Description: Enter the S3 bucket name for the lake.
   DatabaseName:
     Type: String
-    Description: Enter the database name for the lake
+    Description: Enter the database name for the lake.
 
 Resources:
   Function:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ..
+      CodeUri: ../..
       Handler: com.mytiki.ocean.catalog.App::handleRequest
       Runtime: java17
       Architectures:
@@ -55,31 +55,3 @@ Resources:
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/${DatabaseName}"
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/${DatabaseName}/*"
-
-  Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Ref BucketName
-
-  Glue:
-    Type: AWS::Glue::Database
-    Properties:
-      CatalogId: !Ref AWS::AccountId
-      DatabaseInput:
-        Name: !Ref DatabaseName
-        Description: Metadata catalog for Ocean
-        LocationUri: !Sub "s3://${BucketName}"
-
-Outputs:
-  FunctionUrl:
-    Description: "URL"
-    Value: !GetAtt FunctionUrl.FunctionUrl
-
-  Bucket:
-    Description: "ARN"
-    Value: !GetAtt Bucket.Arn
-
-  Glue:
-    Description: "Name"
-    Value: !Ref Glue
-
