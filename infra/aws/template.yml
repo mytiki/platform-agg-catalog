@@ -32,3 +32,4 @@ Resources:
       Location: catalog.yml
       Parameters:
         BucketName: !Ref BucketName
+        DatabaseName: !Ref DatabaseName
