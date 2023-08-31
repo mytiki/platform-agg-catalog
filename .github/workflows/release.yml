@@ -40,13 +40,6 @@ jobs:
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::254962200554:role/GitHubDeployOceanCatalog
-          role-session-name: gh_action
-          aws-region: us-east-2
-
-      - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
           role-to-assume: arn:aws:iam::254962200554:role/GitHubDeployBase
           role-session-name: ${{ env.SESSION_NAME }}
           aws-region: ${{ env.AWS_REGION }}
