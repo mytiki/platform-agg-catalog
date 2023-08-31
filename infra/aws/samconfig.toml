@@ -13,4 +13,7 @@ capabilities = [
     "CAPABILITY_AUTO_EXPAND"
 ]
 image_repositories = []
-parameter_overrides = []
+parameter_overrides = [
+    "BucketName=mytiki-ocean",
+    "DatabaseName=ocean"
+]
