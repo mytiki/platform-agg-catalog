@@ -44,7 +44,7 @@ jobs:
       - name: Commit Changes
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GH Action"
