@@ -9,12 +9,9 @@ updates:
     labels:
       - "chore"
     groups:
-      minor:
+      all:
         patterns:
           - "*"
-        update-types:
-          - "minor"
-          - "patch"
 
   - package-ecosystem: "maven"
     directory: "/"
