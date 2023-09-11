@@ -15,5 +15,5 @@ capabilities = [
 image_repositories = []
 parameter_overrides = [
     "BucketName=mytiki-cleanroom-sample",
-    "DatabaseName=cleanroom-sample"
+    "DatabaseName=cleanroom_sample"
 ]
