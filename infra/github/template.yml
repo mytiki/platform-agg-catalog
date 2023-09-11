@@ -14,8 +14,8 @@ Resources:
     Properties:
       Location: role.yml
       Parameters:
-        GitHubOrg: tiki-bar
-        RepositoryName: tiki-ocean-catalog
+        GitHubOrg: tiki
+        RepositoryName: ocean-catalog
         RoleName: !Ref RoleName
 
   Policy:
