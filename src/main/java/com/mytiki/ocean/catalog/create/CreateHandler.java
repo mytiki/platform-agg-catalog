@@ -39,10 +39,11 @@ public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIG
         try{
             TableIdentifier identifier = TableIdentifier.of(iceberg.getDatabase(), req.getName());
             Schema schema = new Schema.Parser().parse(req.getSchema());
-            PartitionSpec spec = PartitionSpec.builderFor(AvroSchemaUtil.toIceberg(schema))
-                    .hour(req.getPartition())
-                    .identity(req.getIdentity())
-                    .build();
+
+            PartitionSpec.Builder spec = PartitionSpec.builderFor(AvroSchemaUtil.toIceberg(schema));
+            if(req.getPartition() != null) spec.hour(req.getPartition());
+            if(req.getIdentity() != null) spec.identity(req.getIdentity());
+
             if(iceberg.tableExists(identifier)){
                 throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
                         .message("Bad Request")
@@ -52,7 +53,7 @@ public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIG
             }
             String location =  String.join("", iceberg.getWarehouse(), "/", req.getName(),
                     "_", String.valueOf(Instant.now().toEpochMilli()));
-            Table table = iceberg.createTable(identifier, AvroSchemaUtil.toIceberg(schema), spec,
+            Table table = iceberg.createTable(identifier, AvroSchemaUtil.toIceberg(schema), spec.build(),
                     location, null);
             CreateRsp body = new CreateRsp();
             body.setName(table.name());
