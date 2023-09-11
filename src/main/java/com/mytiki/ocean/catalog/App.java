@@ -27,7 +27,7 @@ public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HT
             APIGatewayV2HTTPResponse response = new Router<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse>()
                     .add("POST", "/api/latest/?", new CreateHandler(iceberg))
                     .add("DELETE", "/api/latest/.*", new DeleteHandler(iceberg))
-                    .add("POST", "/api/latest/.*", new UpdateHandler(iceberg))
+                    //.add("POST", "/api/latest/.*", new UpdateHandler(iceberg))
                     .add("GET", "/api/latest/.*", new ReadHandler(iceberg))
                     .handle(http.getMethod(), http.getPath(), request, context);
             iceberg.close();
