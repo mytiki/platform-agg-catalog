@@ -51,8 +51,7 @@ public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIG
                         .properties("name", req.getName())
                         .build();
             }
-            String location =  String.join("", iceberg.getWarehouse(), "/", req.getName(),
-                    "_", String.valueOf(Instant.now().toEpochMilli()));
+            String location =  String.join("/", iceberg.getWarehouse(), req.getName());
             Table table = iceberg.createTable(identifier, AvroSchemaUtil.toIceberg(schema), spec.build(),
                     location, null);
             CreateRsp body = new CreateRsp();
