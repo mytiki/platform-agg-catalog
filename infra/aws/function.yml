@@ -9,6 +9,13 @@ Parameters:
   DatabaseName:
     Type: String
     Description: Enter the database name for the lake.
+  UtilsName:
+    Type: String
+    Default: core-iceberg-utils
+    Description: Enter the name of the utils layer.
+  UtilsVersion:
+    Type: Number
+    Description: Enter the version number of the utils layer.
 
 Resources:
   Function:
@@ -55,3 +62,5 @@ Resources:
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/${DatabaseName}"
                 - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/${DatabaseName}/*"
+      Layers:
+        - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${UtilsName}:${UtilsVersion}"
