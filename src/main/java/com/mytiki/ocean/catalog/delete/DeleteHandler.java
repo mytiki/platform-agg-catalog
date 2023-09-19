@@ -9,10 +9,10 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import com.mytiki.ocean.common.ApiExceptionBuilder;
-import com.mytiki.ocean.common.Iceberg;
-import com.mytiki.ocean.common.Mapper;
-import com.mytiki.ocean.common.Router;
+import com.mytiki.core.iceberg.utils.ApiExceptionBuilder;
+import com.mytiki.core.iceberg.utils.Iceberg;
+import com.mytiki.core.iceberg.utils.Mapper;
+import com.mytiki.core.iceberg.utils.Router;
 import org.apache.iceberg.catalog.TableIdentifier;
 import software.amazon.awssdk.http.HttpStatusCode;
 
