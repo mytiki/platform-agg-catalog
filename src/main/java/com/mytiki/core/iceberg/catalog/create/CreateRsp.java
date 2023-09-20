@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.create;
+package com.mytiki.core.iceberg.catalog.create;
 
 public class CreateRsp {
     private String name;

@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.delete;
+package com.mytiki.core.iceberg.catalog.read;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -13,13 +13,19 @@ import com.mytiki.core.iceberg.utils.ApiExceptionBuilder;
 import com.mytiki.core.iceberg.utils.Iceberg;
 import com.mytiki.core.iceberg.utils.Mapper;
 import com.mytiki.core.iceberg.utils.Router;
+import org.apache.iceberg.PartitionField;
+import org.apache.iceberg.Table;
 import org.apache.iceberg.catalog.TableIdentifier;
+import org.apache.log4j.Logger;
 import software.amazon.awssdk.http.HttpStatusCode;
 
-public class DeleteHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+import java.util.stream.Collectors;
+
+public class ReadHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+    protected static final Logger logger = Logger.getLogger(ReadHandler.class);
     private final Iceberg iceberg;
 
-    public DeleteHandler(Iceberg iceberg) {
+    public ReadHandler(Iceberg iceberg) {
         super();
         this.iceberg = iceberg;
     }
@@ -33,19 +39,18 @@ public class DeleteHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIG
             TableIdentifier identifier = TableIdentifier.of(iceberg.getDatabase(), name);
             if (!iceberg.tableExists(identifier)) {
                 throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
-                        .message("Bad Request")
+                        .message("Not Found")
                         .detail("Table does not exist")
                         .properties("name", name)
                         .build();
             }
-            if (!iceberg.dropTable(identifier)) {
-                throw new ApiExceptionBuilder(HttpStatusCode.INTERNAL_SERVER_ERROR)
-                        .message("Delete Failed")
-                        .properties("name", name)
-                        .build();
-            }
-            DeleteRsp body = new DeleteRsp();
+            Table table = iceberg.loadTable(identifier);
+            ReadRsp body = new ReadRsp();
             body.setName(name);
+            body.setLocation(table.location());
+            body.setSchema(table.schema().toString());
+            body.setPartition(table.spec().fields().stream().collect(
+                    Collectors.toMap((field) -> field.transform().toString(), PartitionField::name)));
             return APIGatewayV2HTTPResponse.builder()
                     .withStatusCode(HttpStatusCode.OK)
                     .withBody(new Mapper().writeValueAsString(body))

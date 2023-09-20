@@ -3,18 +3,18 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog;
+package com.mytiki.core.iceberg.catalog;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import com.mytiki.core.iceberg.catalog.create.CreateHandler;
+import com.mytiki.core.iceberg.catalog.create.CreateReq;
+import com.mytiki.core.iceberg.catalog.create.CreateRsp;
 import com.mytiki.core.iceberg.utils.ApiException;
 import com.mytiki.core.iceberg.utils.Iceberg;
 import com.mytiki.core.iceberg.utils.Mapper;
-import com.mytiki.ocean.catalog.create.CreateHandler;
-import com.mytiki.ocean.catalog.create.CreateReq;
-import com.mytiki.ocean.catalog.create.CreateRsp;
-import com.mytiki.ocean.catalog.mock.MockIceberg;
-import com.mytiki.ocean.catalog.mock.MockReq;
+import com.mytiki.core.iceberg.catalog.mock.MockIceberg;
+import com.mytiki.core.iceberg.catalog.mock.MockReq;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

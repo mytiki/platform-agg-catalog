@@ -3,16 +3,16 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog;
+package com.mytiki.core.iceberg.catalog;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import com.mytiki.core.iceberg.catalog.create.CreateHandler;
+import com.mytiki.core.iceberg.catalog.delete.DeleteHandler;
+import com.mytiki.core.iceberg.catalog.read.ReadHandler;
 import com.mytiki.core.iceberg.utils.*;
-import com.mytiki.ocean.catalog.create.CreateHandler;
-import com.mytiki.ocean.catalog.delete.DeleteHandler;
-import com.mytiki.ocean.catalog.read.ReadHandler;
 import org.apache.log4j.Logger;
 
 public class App implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {

@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog;
+package com.mytiki.core.iceberg.catalog;
 
 import org.junit.Ignore;
 import org.junit.Test;

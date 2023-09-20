@@ -3,15 +3,16 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.read;
+package com.mytiki.core.iceberg.catalog.create;
 
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class ReadRsp {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CreateReq {
     private String name;
-    private String location;
     private String schema;
-    private Map<String, String> partition;
+    private String identity;
+    private String partition;
 
     public String getName() {
         return name;
@@ -19,14 +20,6 @@ public class ReadRsp {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getSchema() {
@@ -37,11 +30,19 @@ public class ReadRsp {
         this.schema = schema;
     }
 
-    public Map<String, String> getPartition() {
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    public String getPartition() {
         return partition;
     }
 
-    public void setPartition(Map<String, String> partition) {
+    public void setPartition(String partition) {
         this.partition = partition;
     }
 }

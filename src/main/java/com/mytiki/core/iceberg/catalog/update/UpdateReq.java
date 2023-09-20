@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.update;
+package com.mytiki.core.iceberg.catalog.update;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

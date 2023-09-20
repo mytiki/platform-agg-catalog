@@ -3,10 +3,10 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.mock;
+package com.mytiki.core.iceberg.catalog.mock;
 
-import com.mytiki.ocean.catalog.create.CreateReq;
-import com.mytiki.ocean.catalog.update.UpdateReq;
+import com.mytiki.core.iceberg.catalog.create.CreateReq;
+import com.mytiki.core.iceberg.catalog.update.UpdateReq;
 
 public class MockReq {
 

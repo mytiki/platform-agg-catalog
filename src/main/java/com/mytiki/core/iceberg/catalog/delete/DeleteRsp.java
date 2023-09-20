@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.ocean.catalog.delete;
+package com.mytiki.core.iceberg.catalog.delete;
 
 public class DeleteRsp {
     private String name;
