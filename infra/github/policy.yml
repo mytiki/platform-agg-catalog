@@ -18,14 +18,5 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - iam:CreateRole
-              - iam:TagRole
-              - iam:GetRolePolicy
-              - iam:PutRolePolicy
-              - iam:AttachRolePolicy
-              - iam:GetRole
-            Resource: "*"
-          - Effect: Allow
-            Action:
               - serverlessrepo:*
             Resource: "*"
