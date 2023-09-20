@@ -1,35 +1,93 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Ocean - Catalog Infrastructure
+Description: Iceberg Catalog
 
 Parameters:
   BucketName:
     Type: String
-    Description: Enter the S3 bucket name for the lake
+    Description: Enter the S3 bucket name for the lake.
   DatabaseName:
     Type: String
-    Description: Enter the database name for the lake
+    Description: Enter the database name for the lake.
+  UtilsName:
+    Type: String
+    Default: core-iceberg-utils
+    Description: Enter the name of the utils layer.
+  UtilsVersion:
+    Type: Number
+    Description: Enter the version number of the utils layer.
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: core-iceberg-catalog
+    Description: Iceberg Catalog
+    Author: tiki
+    SpdxLicenseId: MIT
+    LicenseUrl: ../../LICENSE
+    ReadmeUrl: ../../README.md
+    Labels: ['iceberg']
+    HomePageUrl: https://mytiki.com
+    SemanticVersion: 0.1.7
+    SourceCodeUrl: https://github.com/tiki/core-iceberg-catalog
 
 Resources:
-  Function:
-    Type: AWS::Serverless::Application
-    Properties:
-      Location: function.yml
-      Parameters:
-        BucketName: !Ref BucketName
-        DatabaseName: !Ref DatabaseName
-
   Bucket:
-    Type: AWS::Serverless::Application
+    Type: AWS::S3::Bucket
     Properties:
-      Location: bucket.yml
-      Parameters:
-        BucketName: !Ref BucketName
+      BucketName: !Ref BucketName
 
   Glue:
-    Type: AWS::Serverless::Application
+    Type: AWS::Glue::Database
     Properties:
-      Location: catalog.yml
-      Parameters:
-        BucketName: !Ref BucketName
-        DatabaseName: !Ref DatabaseName
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Ref DatabaseName
+        Description: Metadata catalog for Ocean
+        LocationUri: !Sub "s3://${BucketName}"
+
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../..
+      Handler: com.mytiki.ocean.catalog.App::handleRequest
+      Runtime: java17
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 20
+      FunctionUrlConfig:
+        AuthType: AWS_IAM
+        InvokeMode: BUFFERED
+        Cors:
+          AllowCredentials: true
+          MaxAge: 0
+          AllowHeaders:
+            - Authorization
+            - Content-Type
+            - Accept
+          AllowMethods:
+            - GET
+            - POST
+            - DELETE
+          AllowOrigins:
+            - "*"
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref BucketName
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - glue:GetTable
+                - glue:GetTables
+                - glue:GetDatabase
+                - glue:GetDatabases
+                - glue:CreateTable
+                - glue:DeleteTable
+                - glue:UpdateTable
+              Resource:
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/${DatabaseName}"
+                - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/${DatabaseName}/*"
+      Layers:
+        - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${UtilsName}:${UtilsVersion}"

@@ -28,6 +28,7 @@ replay_pid*
 
 # AWS
 .aws-sam
+packaged.yaml
 
 # Generated Outputs
 target
