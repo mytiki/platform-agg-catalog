@@ -11,7 +11,6 @@ on:
 env:
   UTILS_VERSION: 0.2.1
 
-# Cancel any active builds when new commits are pushed
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
