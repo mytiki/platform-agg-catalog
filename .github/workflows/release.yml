@@ -48,12 +48,12 @@ jobs:
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::254962200554:role/GitHubDeployOceanCatalog
+          role-to-assume: arn:aws:iam::254962200554:role/GitHubDeployIcebergCatalog
           role-session-name: ${{ env.SESSION_NAME }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: SAM Deploy AWS
-        run: cd infra/aws && sam build && sam package && sam deploy
+      - name: SAM Publish
+        run: cd infra/aws && sam build && sam package --output-template-file packaged.yaml && sam publish --template packaged.yaml
 
       - name: Get Version
         id: version
