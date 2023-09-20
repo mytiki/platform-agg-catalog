@@ -42,8 +42,8 @@ jobs:
         with:
           repository: tiki/core-iceberg-utils
           token: ${{ github.token }}
-          path: ${{ env.UTILS_VERSION }}
-          ref: 0.2.1
+          path: utils
+          ref: ${{ env.UTILS_VERSION }}
 
       - name: Maven Install Utils
         run: cd utils && mvn clean package install
