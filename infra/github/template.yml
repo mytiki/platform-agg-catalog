@@ -15,7 +15,7 @@ Resources:
       Location: role.yml
       Parameters:
         GitHubOrg: tiki
-        RepositoryName: ocean-catalog
+        RepositoryName: core-iceberg-catalog
         RoleName: !Ref RoleName
 
   Policy:
