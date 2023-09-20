@@ -32,6 +32,17 @@ jobs:
           java-version: '20'
           distribution: 'zulu'
 
+      - name: Check out utils
+        uses: actions/checkout@v4
+        with:
+          repository: tiki/core-iceberg-utils
+          token: ${{ github.token }}
+          path: utils
+          ref: 0.2.1
+
+      - name: Maven Install Utils
+        run: cd utils && mvn clean package install
+
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
