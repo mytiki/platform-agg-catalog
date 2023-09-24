@@ -10,7 +10,7 @@ on:
 env:
   SESSION_NAME : "gh_action"
   AWS_REGION : "us-east-2"
-  UTILS_VERSION: 0.2.1
+  UTILS_VERSION: 0.2.2
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

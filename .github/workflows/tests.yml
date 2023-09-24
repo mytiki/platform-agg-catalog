@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  UTILS_VERSION: 0.2.1
+  UTILS_VERSION: 0.2.2
 
 # Cancel any active builds when new commits are pushed
 concurrency:
