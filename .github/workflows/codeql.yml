@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  UTILS_VERSION: 0.2.1
+  UTILS_VERSION: 0.2.2
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
