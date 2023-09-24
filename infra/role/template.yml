@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform:
+  - AWS::LanguageExtensions
+  - AWS::Serverless-2016-10-31
+Description: Iceberg Catalog
+
+Parameters:
+  RoleName:
+    Description: Name of the IAM Role for the deployment
+    Type: String
+    Default: "GitHubDeployCoreIcebergCatalog"
+
+Resources:
+  Role:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: !Sub arn:aws:serverlessrepo:us-east-2:${AWS::AccountId}:applications/core-aws-github-role
+        SemanticVersion: 0.0.2
+      Parameters:
+        GitHubOrg: tiki
+        RepositoryName: core-iceberg-catalog
+        RoleName: !Ref RoleName
+
+  Policy:
+    Type: AWS::IAM::RolePolicy
+    DependsOn: Role
+    Properties:
+      RoleName: !Ref RoleName
+      PolicyName: DeploymentPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - serverlessrepo:*
+            Resource: "*"
