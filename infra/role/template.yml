@@ -31,5 +31,16 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - serverlessrepo:*
+              - serverlessrepo:ListApplications
+              - serverlessrepo:CreateApplication
+              - serverlessrepo:SearchApplications
             Resource: "*"
+          - Effect: Allow
+            Action:
+              - serverlessrepo:*
+            Resource: !Sub arn:aws:serverlessrepo:${AWS::Region}:${AWS::AccountId}:applications/core-iceberg-catalog
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+            Resource: !Sub arn:aws:s3:::mytiki-sam-deploy/*
