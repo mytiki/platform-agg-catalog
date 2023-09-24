@@ -53,7 +53,7 @@ jobs:
           role-session-name: ${{ vars.SESSION_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: SAM Deploy GitHub
+      - name: SAM Role
         run: cd infra/role && sam build && sam package && sam deploy
 
       - name: AWS Credentials
