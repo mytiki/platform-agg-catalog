@@ -6,9 +6,6 @@ on:
     branches:
       - main
 
-env:
-  UTILS_VERSION: 0.2.2
-
 # Cancel any active builds when new commits are pushed
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -37,7 +34,7 @@ jobs:
           repository: tiki/core-iceberg-utils
           token: ${{ github.token }}
           path: utils
-          ref: ${{ env.UTILS_VERSION }}
+          ref: ${{ vars.UTILS_VERSION }}
 
       - name: Maven Install Utils
         run: cd utils && mvn clean package install
