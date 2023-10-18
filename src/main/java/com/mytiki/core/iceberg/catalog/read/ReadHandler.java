@@ -9,20 +9,17 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import com.mytiki.core.iceberg.utils.ApiExceptionBuilder;
-import com.mytiki.core.iceberg.utils.Iceberg;
-import com.mytiki.core.iceberg.utils.Mapper;
-import com.mytiki.core.iceberg.utils.Router;
+import com.mytiki.core.iceberg.utils.*;
 import org.apache.iceberg.PartitionField;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.catalog.TableIdentifier;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.http.HttpStatusCode;
 
 import java.util.stream.Collectors;
 
 public class ReadHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    protected static final Logger logger = Logger.getLogger(ReadHandler.class);
+    protected static final Logger logger = Initialize.logger(ReadHandler.class);
     private final Iceberg iceberg;
 
     public ReadHandler(Iceberg iceberg) {
@@ -38,7 +35,7 @@ public class ReadHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGat
         try {
             TableIdentifier identifier = TableIdentifier.of(iceberg.getDatabase(), name);
             if (!iceberg.tableExists(identifier)) {
-                throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
+                throw new ApiExceptionBuilder(HttpStatusCode.NOT_FOUND)
                         .message("Not Found")
                         .detail("Table does not exist")
                         .properties("name", name)

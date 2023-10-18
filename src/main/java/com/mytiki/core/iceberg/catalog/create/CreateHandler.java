@@ -11,6 +11,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import com.mytiki.core.iceberg.utils.ApiExceptionBuilder;
 import com.mytiki.core.iceberg.utils.Iceberg;
+import com.mytiki.core.iceberg.utils.Initialize;
 import com.mytiki.core.iceberg.utils.Mapper;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaParseException;
@@ -18,11 +19,11 @@ import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.avro.AvroSchemaUtil;
 import org.apache.iceberg.catalog.TableIdentifier;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.http.HttpStatusCode;
 
 public class CreateHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-    protected static final Logger logger = Logger.getLogger(CreateHandler.class);
+    protected static final Logger logger = Initialize.logger(CreateHandler.class);
     private final Mapper mapper = new Mapper();
     private final Iceberg iceberg;
 

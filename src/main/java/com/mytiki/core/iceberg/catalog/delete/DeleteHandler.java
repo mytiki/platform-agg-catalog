@@ -32,8 +32,8 @@ public class DeleteHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIG
         try {
             TableIdentifier identifier = TableIdentifier.of(iceberg.getDatabase(), name);
             if (!iceberg.tableExists(identifier)) {
-                throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
-                        .message("Bad Request")
+                throw new ApiExceptionBuilder(HttpStatusCode.NOT_FOUND)
+                        .message("Not Found")
                         .detail("Table does not exist")
                         .properties("name", name)
                         .build();
