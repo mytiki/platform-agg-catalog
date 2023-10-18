@@ -6,21 +6,12 @@
 package com.mytiki.core.iceberg.catalog.mock;
 
 import com.mytiki.core.iceberg.catalog.create.CreateReq;
-import com.mytiki.core.iceberg.catalog.update.UpdateReq;
 
 public class MockReq {
 
     public static CreateReq createReq() {
         CreateReq req = new CreateReq();
         req.setName(name);
-        req.setSchema(raw);
-        req.setPartition(partition);
-        req.setIdentity(identity);
-        return req;
-    }
-
-    public static UpdateReq updateReq() {
-        UpdateReq req = new UpdateReq();
         req.setSchema(raw);
         req.setPartition(partition);
         req.setIdentity(identity);

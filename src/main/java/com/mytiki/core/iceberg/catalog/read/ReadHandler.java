@@ -35,7 +35,7 @@ public class ReadHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGat
         try {
             TableIdentifier identifier = TableIdentifier.of(iceberg.getDatabase(), name);
             if (!iceberg.tableExists(identifier)) {
-                throw new ApiExceptionBuilder(HttpStatusCode.BAD_REQUEST)
+                throw new ApiExceptionBuilder(HttpStatusCode.NOT_FOUND)
                         .message("Not Found")
                         .detail("Table does not exist")
                         .properties("name", name)

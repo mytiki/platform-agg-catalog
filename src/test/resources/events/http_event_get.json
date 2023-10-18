@@ -1,0 +1,8 @@
+{
+  "requestContext":{
+    "http":{
+      "method":"GET",
+      "path":"/api/latest/ocean-test-fcb8cfcb-41ab-4fe2-8314-ca7f937928ab"
+    }
+  }
+}

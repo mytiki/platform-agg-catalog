@@ -12,6 +12,7 @@ import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Schema;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.catalog.Namespace;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -25,11 +26,11 @@ public class MockIceberg {
     private final String name;
     private final String schema = "-----MOCKED_SCHEMA-----";
 
-    public MockIceberg(Iceberg iceberg) {
-        this.iceberg = iceberg;
+    public MockIceberg() {
         try (InputStream input = Iceberg.class.getClassLoader().getResourceAsStream("iceberg.properties")) {
             Properties prop = new Properties();
             prop.load(input);
+            iceberg = Mockito.mock(Iceberg.class);
             Table table = Mockito.mock(Table.class);
             PartitionSpec spec = Mockito.mock(PartitionSpec.class);
             Schema schema = Mockito.mock(Schema.class);
@@ -49,9 +50,14 @@ public class MockIceberg {
             Mockito.lenient().doReturn(table).when(iceberg)
                     .createTable(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
             Mockito.lenient().doReturn(false).when(iceberg).tableExists(Mockito.any());
+            Mockito.lenient().doReturn(true).when(iceberg).dropTable(Mockito.any());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public Iceberg iceberg() {
+        return this.iceberg;
     }
 
     public String getLocation() {
