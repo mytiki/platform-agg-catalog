@@ -9,8 +9,6 @@ package com.mytiki.core.iceberg.catalog;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import com.amazonaws.services.lambda.runtime.tests.annotations.Event;
-import com.mytiki.core.iceberg.catalog.create.CreateHandler;
-import com.mytiki.core.iceberg.catalog.create.CreateRsp;
 import com.mytiki.core.iceberg.catalog.mock.MockIceberg;
 import com.mytiki.core.iceberg.catalog.read.ReadHandler;
 import com.mytiki.core.iceberg.catalog.read.ReadRsp;
@@ -18,8 +16,6 @@ import com.mytiki.core.iceberg.utils.ApiException;
 import com.mytiki.core.iceberg.utils.Mapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import software.amazon.awssdk.http.HttpStatusCode;
 

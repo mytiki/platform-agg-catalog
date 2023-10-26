@@ -27,7 +27,7 @@ Metadata:
     ReadmeUrl: ../../README.md
     Labels: [ 'iceberg' ]
     HomePageUrl: https://github.com/tiki/core-iceberg-catalog
-    SemanticVersion: 0.1.11
+    SemanticVersion: 0.1.12
     SourceCodeUrl: https://github.com/tiki/core-iceberg-catalog
 
 Resources:
@@ -49,7 +49,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../..
-      Handler: com.mytiki.ocean.catalog.App::handleRequest
+      Handler: com.mytiki.core.iceberg.catalog.App::handleRequest
       Runtime: java17
       Architectures:
         - x86_64
@@ -60,9 +60,9 @@ Resources:
         ApplyOn: PublishedVersions
       Environment:
         Variables:
-          AWS_LAMBDA_EXEC_WRAPPER: "/opt/otel-proxy-handle"
+          AWS_LAMBDA_EXEC_WRAPPER: "/opt/otel-handler"
           ICEBERG_WAREHOUSE: !Sub "s3://${BucketName}"
-          ICEBERG_DATABASE: !Ref DatabaseName
+          ICEBERG_DATABASE_NAME: !Ref DatabaseName
       FunctionUrlConfig:
         AuthType: AWS_IAM
         InvokeMode: BUFFERED

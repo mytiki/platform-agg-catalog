@@ -12,14 +12,10 @@ import com.amazonaws.services.lambda.runtime.tests.annotations.Event;
 import com.mytiki.core.iceberg.catalog.delete.DeleteHandler;
 import com.mytiki.core.iceberg.catalog.delete.DeleteRsp;
 import com.mytiki.core.iceberg.catalog.mock.MockIceberg;
-import com.mytiki.core.iceberg.catalog.read.ReadHandler;
-import com.mytiki.core.iceberg.catalog.read.ReadRsp;
 import com.mytiki.core.iceberg.utils.ApiException;
 import com.mytiki.core.iceberg.utils.Mapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import software.amazon.awssdk.http.HttpStatusCode;
 

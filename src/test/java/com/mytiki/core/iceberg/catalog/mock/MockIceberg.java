@@ -6,13 +6,11 @@
 package com.mytiki.core.iceberg.catalog.mock;
 
 
-
 import com.mytiki.core.iceberg.utils.Iceberg;
 import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Schema;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.catalog.Namespace;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.IOException;
