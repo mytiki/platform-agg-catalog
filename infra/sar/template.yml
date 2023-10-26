@@ -27,7 +27,7 @@ Metadata:
     ReadmeUrl: ../../README.md
     Labels: [ 'iceberg' ]
     HomePageUrl: https://github.com/tiki/core-iceberg-catalog
-    SemanticVersion: 0.1.10
+    SemanticVersion: 0.1.11
     SourceCodeUrl: https://github.com/tiki/core-iceberg-catalog
 
 Resources:
@@ -104,4 +104,4 @@ Resources:
               Resource: "*"
       Layers:
         - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${UtilsName}:${UtilsVersion}"
-        - !Sub "arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-x86_64-ver-1-30-0:1"
+        - !Sub "arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1"
