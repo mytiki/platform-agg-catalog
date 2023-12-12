@@ -34,3 +34,19 @@ Resources:
               - s3:PutObject
               - s3:GetObject
             Resource: !Sub arn:aws:s3:::mytiki-sam-deploy/*
+          - Effect: Allow
+            Action: cloudformation:ListStacks
+            Resource: "*"
+          - Effect: Allow
+            Action: cloudformation:*
+            Resource:
+              - !Sub arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/core-ocean-catalog-infra/*
+              - !Sub arn:aws:cloudformation:${AWS::Region}:aws:transform/Serverless-2016-10-31
+          - Effect: Allow
+            Action: glue:CreateDatabase
+            Resource:
+              - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
+              - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
+          - Effect: Allow
+            Action: s3:CreateBucket
+            Resource: arn:aws:s3:::*
