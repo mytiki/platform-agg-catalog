@@ -6,11 +6,11 @@ Parameters:
   BucketName:
     Type: String
     Description: Enter the S3 bucket name for the lake.
-    Default: mytiki-ocean
+    Default: mytiki-ocean-new
   DatabaseName:
     Type: String
     Description: Enter the database name for the lake.
-    Default: ocean
+    Default: ocean-new
 
 Resources:
   Bucket:
