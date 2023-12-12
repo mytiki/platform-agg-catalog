@@ -1,16 +1,15 @@
 version = 0.1
 
 [default.global.parameters]
-stack_name = "core-iceberg-catalog-role"
+stack_name = "core-ocean-catalog-infra"
 s3_bucket = "mytiki-sam-deploy"
-s3_prefix = "core/iceberg/catalog/role"
+s3_prefix = "core/ocean/catalog/infra"
 region = "us-east-2"
 
 [default.deploy.parameters]
 confirm_changeset = false
 capabilities = [
     "CAPABILITY_IAM",
-    "CAPABILITY_NAMED_IAM",
     "CAPABILITY_AUTO_EXPAND"
 ]
 image_repositories = []

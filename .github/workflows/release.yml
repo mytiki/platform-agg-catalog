@@ -24,27 +24,7 @@ jobs:
 
       - name: SetVars
         run: |
-          sed -i 's/${AWS::AccountId}/${{ secrets.AWS_ACCOUNT_ID }}/' infra/role/template.yml
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '20'
-          distribution: 'zulu'
-
-      - name: Check out utils
-        uses: actions/checkout@v4
-        with:
-          repository: tiki/core-iceberg-utils
-          token: ${{ github.token }}
-          path: utils
-          ref: ${{ vars.UTILS_VERSION }}
-
-      - name: Maven Install Utils
-        run: cd utils && mvn clean package install
-
-      - name: Install xmlstarlet
-        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+          sed -i 's/${AWS::AccountId}/${{ secrets.AWS_ACCOUNT_ID }}/' role/template.yml
 
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -54,23 +34,33 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: SAM Role
-        run: cd infra/role && sam build && sam package && sam deploy
+        run: |
+          cd role
+          sam build
+          sam package
+          sam deploy
 
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubDeployCoreIcebergCatalog
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubDeployCoreOceanCatalog
           role-session-name: ${{ vars.SESSION_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: SAM Publish
-        run: cd infra/sar && sam build && sam package --output-template-file packaged.yaml && sam publish --template packaged.yaml
+        run: | 
+          sam build
+          sam package
+          sam deploy
 
       - name: Get Version
-        id: version
-        run: echo "current=$(xmlstarlet sel -t -m _:project -v _:version pom.xml)" >> $GITHUB_OUTPUT
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+          branch: ${{ steps.getpr.outputs.branch }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.version.outputs.current }}
+          tag: ${{ steps.semver.outputs.nextStrict }}
