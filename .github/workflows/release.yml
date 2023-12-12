@@ -33,7 +33,7 @@ jobs:
           role-session-name: ${{ vars.SESSION_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: SAM Role
+      - name: SAM Deploy Role
         run: |
           cd role
           sam build
@@ -47,7 +47,7 @@ jobs:
           role-session-name: ${{ vars.SESSION_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: SAM Publish
+      - name: SAM Deploy Catalog
         run: | 
           sam build
           sam package
