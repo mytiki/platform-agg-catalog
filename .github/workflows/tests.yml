@@ -17,39 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '20'
-          distribution: 'zulu'
-
       - uses: aws-actions/setup-sam@v2
         with:
           use-installer: true
 
-      - name: Check out utils
-        uses: actions/checkout@v4
-        with:
-          repository: tiki/core-iceberg-utils
-          token: ${{ github.token }}
-          path: utils
-          ref: ${{ vars.UTILS_VERSION }}
-
-      - name: Maven Install Utils
-        run: cd utils && mvn clean package install
-
-      - name: Maven Package
-        run: mvn clean package
-
-      - name: Upload Results
-        uses: actions/upload-artifact@v3
-        if: success() || failure()
-        with:
-          name: test-results
-          path: target/surefire-reports/**/*.xml
-
       - name: Validate AWS Template
-        run: cd infra/sar && sam validate
+        run: sam validate --lint
 
       - name: Build AWS Template
-        run: cd infra/sar && sam build
+        run: sam build

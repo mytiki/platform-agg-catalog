@@ -1,9 +1,0 @@
-{
-  "requestContext":{
-    "http":{
-      "method":"POST",
-      "path":"/api/latest"
-    }
-  },
-  "body":"{\"name\":\"logs\",\"schema\":\"{\\n\\\"type\\\":\\\"record\\\",\\n\\\"name\\\":\\\"Record\\\",\\n\\\"fields\\\":[\\n{\\n\\\"name\\\":\\\"level\\\",\\n\\\"type\\\":\\\"string\\\"\\n},\\n{\\n\\\"name\\\":\\\"event_time\\\",\\n\\\"type\\\":{\\n\\\"type\\\":\\\"long\\\",\\n\\\"logicalType\\\":\\\"timestamp-micros\\\",\\n\\\"adjust-to-utc\\\":true\\n}\\n},\\n{\\n\\\"name\\\":\\\"message\\\",\\n\\\"type\\\":\\\"string\\\"\\n},\\n{\\n\\\"name\\\":\\\"call_stack\\\",\\n\\\"type\\\":{\\n\\\"type\\\":\\\"array\\\",\\n\\\"items\\\":\\\"string\\\"\\n}\\n}\\n]\\n}\\n\",\"identity\":\"level\",\"partition\":\"event_time\"}"
-}
