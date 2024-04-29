@@ -9,6 +9,6 @@ Please review our [Contributor Guidelines](https://github.com/mytiki/.github/blo
 
 - [Ask a Question](https://github.com/orgs/mytiki/discussions)
 - [Report a Bug](https://github.com/mytiki/roadmap/issues/new?assignees=&labels=bug%2Crequest&projects=&template=bug.yml)
-- [Report a Vulnerability](https://github.com/mytiki/client-library-ios/security/advisories/new)
+- [Report a Vulnerability](https://github.com/mytiki/platform-agg-catalog/security/advisories/new)
 - [Request a Feature](https://github.com/mytiki/roadmap/issues/new?assignees=&labels=feature%2Crequest&projects=&template=feature.yml)
 
